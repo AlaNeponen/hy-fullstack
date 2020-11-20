@@ -49,13 +49,10 @@ const Content = (props) => {
   )
 }
 const Total = (props) => {
-  let total = 0
-  let i
-  for (i = 0; i < props.parts.length; i++) {
-    total += props.parts[i].exercises
-  }
+  const reducer = (accumulator, currentValue) => accumulator + currentValue;
+  const array = props.parts.map(part => part.exercises)
   return (
-    <b>total of {total} exercises</b>
+    <b>total of {array.reduce(reducer)} exercises</b>
   )
 }
 ReactDOM.render(<App />, document.getElementById('root'))
