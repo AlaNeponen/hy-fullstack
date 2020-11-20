@@ -7,12 +7,30 @@ const App = (props) => {
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       {props.anecdotes[selected]}
       <p>Has {points[selected]} votes.</p>
       <br/>
       <Button handleClick={() => setSelected(RandomInteger)} text="next anecdote" />
       <Button handleClick={() => updatePoints(points, selected, setPoints)} text="vote"/>
+      <h2>Anecdote with most votes</h2>
+      <p>{props.anecdotes[mostVotes(points)]}</p>
+      <p>Has {points[mostVotes(points)]} votes.</p>
     </div>
+  )
+}
+const mostVotes = (points) => {
+  let topAnecdote = 0
+  let numberOfVotes = 0
+  let i
+  for (i = 0; i < 6; i++) {
+    if (points[i] > numberOfVotes) {
+      topAnecdote = i
+      numberOfVotes = points[i]
+    }
+  }
+  return (
+    topAnecdote
   )
 }
 const updatePoints = (points, selected, setter) => {
