@@ -15,14 +15,17 @@ const App = () => {
       <h1>Statistics</h1>
       <Statistics text="good" amount={good} />
       <Statistics text="neutral" amount={neutral} />
-      <Statistics text ="bad" amount={bad} />
+      <Statistics text="bad" amount={bad} />
+      <Statistics text="all" amount={good + bad + neutral}/>
+      <Statistics text="average" amount={(good - bad)/(good + bad + neutral)} />
+      <Statistics text="positive" amount={(good/(good + bad + neutral)) * 100} percentage="%"/>
     </div>
   )
 }
 const Statistics = (props) => {
   return (
     <div>
-      <p>{props.text} {props.amount}</p>
+      <p>{props.text} {props.amount}{props.percentage}</p>
     </div>
   )
 }
