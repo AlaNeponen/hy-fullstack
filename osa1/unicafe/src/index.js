@@ -28,20 +28,26 @@ const Statistics = (props) => {
   return (
     <div>
       <h1>Statistics</h1>
-      <StatisticLine text="good" amount={props.good} />
-      <StatisticLine text="neutral" amount={props.neutral} />
-      <StatisticLine text="bad" amount={props.bad} />
-      <StatisticLine text="all" amount={props.good + props.bad + props.neutral}/>
-      <StatisticLine text="average" amount={(props.good - props.bad)/(props.good + props.bad + props.neutral)} />
-      <StatisticLine text="positive" amount={(props.good/(props.good + props.bad + props.neutral)) * 100} percentage="%"/>
+      <table>
+        <thead></thead>
+        <tbody>
+          <StatisticLine text="good" amount={props.good} />
+          <StatisticLine text="neutral" amount={props.neutral} />
+          <StatisticLine text="bad" amount={props.bad} />
+          <StatisticLine text="all" amount={props.good + props.bad + props.neutral}/>
+          <StatisticLine text="average" amount={(props.good - props.bad)/(props.good + props.bad + props.neutral)} />
+          <StatisticLine text="positive" amount={(props.good/(props.good + props.bad + props.neutral)) * 100} percentage="%"/>
+        </tbody>
+        <tfoot></tfoot>
+      </table>
     </div>
   )
 }
 const StatisticLine = (props) => {
   return (
-    <div>
-      <p>{props.text} {props.amount}{props.percentage}</p>
-    </div>
+    <tr>
+      <td>{props.text} {props.amount}{props.percentage}</td>
+    </tr>
   )
 }
 const Button = (props) => {
