@@ -1,6 +1,6 @@
-import Axios from 'axios'
+
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import personService from './services/person'
 
 const App = () => {
   const [ persons, setPersons] = useState([]) 
@@ -8,10 +8,10 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
       })
   }, [])
 
@@ -21,16 +21,31 @@ const App = () => {
     if (!names.includes(newName)) {
       const personObject = {
         name: newName,
-        number: newNumber
+        number: newNumber,
+        id: persons.length + 1
       }
-      setPersons(persons.concat(personObject))
-      setNewName("")
-      setNewNumber("")
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName("")
+          setNewNumber("")
+        })
     } else {
       window.alert(`${newName} is already added to phonebook`)
     }
     
   }
+  const deletePerson = (id) => {
+    const name = persons.find(p => p.id === id).name
+    if (window.confirm(`Delete ${name} ?`)) {
+      personService
+        .deletePerson(id)
+
+      setPersons(persons.filter(p => p.id !== id))
+    }
+
+  } 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
@@ -42,7 +57,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <NewPersonForm addPerson={addPerson} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
-      <DisplayPersons persons={persons}/>
+      <DisplayPersons persons={persons} deletePerson={deletePerson}/>
     </div>
   )
 
@@ -51,14 +66,14 @@ const DisplayPersons = (props) => {
   return (
     <ul>
       {props.persons.map(person => 
-        <DisplayPerson key={person.name} name={person.name} number={person.number}/>
+        <DisplayPerson id={person.id} key={person.id} name={person.name} number={person.number} deletePerson={props.deletePerson}/>
       )}
     </ul>
   )
 }
 const DisplayPerson = (props) => {
   return (
-    <p>{props.name} {props.number}</p>
+    <p>{props.name} {props.number} <button onClick={() => props.deletePerson(props.id)}>Delete number</button></p>
   )
 }
 const NewPersonForm = (props) => {
