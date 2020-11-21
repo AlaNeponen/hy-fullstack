@@ -6,6 +6,7 @@ const App = () => {
   const [ persons, setPersons] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     personService
@@ -31,6 +32,10 @@ const App = () => {
           setNewName("")
           setNewNumber("")
         })
+      setMessage(`${personObject.name} succesfully added!`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)  
     } else {
       window.alert(`${newName} is already added to phonebook`)
     }
@@ -43,6 +48,10 @@ const App = () => {
         .deletePerson(id)
 
       setPersons(persons.filter(p => p.id !== id))
+      setMessage(`Number succesfully deleted!`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
 
   } 
@@ -54,6 +63,7 @@ const App = () => {
   }
   return (
     <div>
+      <Notification message={message}/>
       <h2>Phonebook</h2>
       <NewPersonForm addPerson={addPerson} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
@@ -91,6 +101,26 @@ const NewPersonForm = (props) => {
         </div>
       </form>
   </div>
+  )
+}
+const Notification = ({ message }) => {
+  const notificationStyle = {
+    color: 'green',
+    fontStyle: 'bold',
+    fontSize: 16,
+    borderSyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    background: 'lightgrey',
+    marginBottom: 10
+  }
+  if (message === null) {
+    return null
+  }
+  return (
+    <div>
+      <p style={notificationStyle}>{message}</p>
+    </div>
   )
 }
 export default App
