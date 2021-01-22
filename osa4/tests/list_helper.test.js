@@ -58,3 +58,61 @@ describe('total likes', () => {
   })
 
 })
+
+describe('favoriteBlog', () => {
+  const blog1 =
+  {
+    title: 'eka',
+    author: 'meikä',
+    url: 'notarealurl.org',
+    likes: 4
+  }
+
+  const blog3 = 
+  {
+    title: 'kolmas',
+    author: 'sama äijä',
+    url: 'eivielakaanoikeaurl.com',
+    likes: 5
+  }
+
+  const listWithOne = [
+    {
+      title: 'eka',
+      author: 'meikä',
+      url: 'notarealurl.org',
+      likes: 4
+    }
+  ]
+
+  const listWithMultiple = [
+      {
+        title: 'eka',
+        author: 'meikä',
+        url: 'notarealurl.org',
+        likes: 4
+      },
+
+      {
+          title: 'toka',
+          author: 'joku muu',
+          url: 'stillnotreal.fi',
+          likes: 1
+      },
+
+      {
+          title: 'kolmas',
+          author: 'sama äijä',
+          url: 'eivielakaanoikeaurl.com',
+          likes: 5
+      }
+  ]
+  test('when list has only one blog, favoriteBlog will return that blog', () => {
+      const result = listHelper.favoriteBlog(listWithOne)
+      expect(result).toEqual(blog1)
+  })
+  test('favoriteBlog returns blog with most likes from a list with multiple blogs', () => {
+      const result = listHelper.favoriteBlog(listWithMultiple)
+      expect(result).toEqual(blog3)
+  })
+})
