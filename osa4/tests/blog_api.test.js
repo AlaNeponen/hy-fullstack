@@ -70,6 +70,20 @@ test('a new blog can be added', async () => {
       expect(titles).toContain('uusi')
 })
 
+test('blog can be deleted', async () => {
+    const blogs = await api.get('/api/blogs')
+    const blogToBeDeleted = blogs.body[0]
+    await api
+      .delete(`/api/blogs/${blogToBeDeleted.id}`)
+      .expect(204)
+
+    const remainingBlogs = await api.get('/api/blogs')
+    expect(remainingBlogs.body.length).toBe(blogs.body.length - 1)
+    const titles = remainingBlogs.body.map(b => b.title)
+    expect(titles).not.toContain(blogToBeDeleted.title)
+    
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
