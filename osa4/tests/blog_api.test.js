@@ -51,6 +51,25 @@ test('returned blogs are defined by id, not _id', async () => {
     expect(res.body[0].id).toBeDefined()
 })
 
+test('a new blog can be added', async () => {
+    const newBlog = {
+        title: 'uusi',
+        author: 'testi',
+        url: 'jotaintaastahan.me',
+        likes: 20
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+    
+      const res = await api.get('/api/blogs')
+      const titles = res.body.map(b => b.title)
+      expect(res.body).toHaveLength(initialBlogs.length + 1)
+      expect(titles).toContain('uusi')
+})
+
 afterAll(() => {
     mongoose.connection.close()
 })
